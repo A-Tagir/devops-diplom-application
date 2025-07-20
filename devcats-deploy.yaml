@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devcats-deployment
+  labels:
+    app: devcats
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devcats
+  template:
+    metadata:
+      labels: 
+        app: devcats
+    spec:
+      containers:
+      - name: devcats
+        image: atagir/devcats:1.0
+        ports:
+          - containerPort: 80
+
+
+        
+
