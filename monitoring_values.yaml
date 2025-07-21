@@ -1,0 +1,73 @@
+# values.yaml
+
+## Отключаем/включаем компоненты
+prometheus:
+  enabled: true
+  prometheusSpec:
+    scrapeInterval: 30s  # Интервал сбора метрик
+    retention: 10d      # Хранение данных 10 дней
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 500m
+      limits:
+        memory: 1Gi
+        cpu: 1
+
+alertmanager:
+  enabled: true
+  alertmanagerSpec:
+    retention: "120h"  # Хранение алертов 5 дней
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 200m
+      limits:
+        memory: 1Gi
+        cpu: 500m
+
+grafana:
+  enabled: true
+  adminPassword: "MySecurePassword123"  # Пароль для Grafana (admin)
+  service:
+    type: NodePort
+    port: 3000
+    nodePort: 30080
+  additionalDataSources:
+    - name: Prometheus
+      type: prometheus
+      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+      access: proxy
+  dashboards:
+    default:
+      k8s-cluster:
+        gnetId: 315
+        revision: 1
+        datasource: Prometheus
+      node-exporter:
+        gnetId: 3119
+        revision: 1
+        datasource: Prometheus
+
+## Настройки сбора метрик
+kube-state-metrics:
+  enabled: true
+
+prometheus-node-exporter:
+  enabled: true
+
+## Настройки Alertmanager (например, Slack)
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['alertname']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: 'null'
+    receivers:
+    - name: 'null'
+
+
