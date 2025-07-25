@@ -28,6 +28,11 @@ alertmanager:
 
 grafana:
   enabled: true
+  grafana.ini:
+    server:
+      domain: ""
+      root_url: "http:///monitor"
+      serve_from_sub_path: true
   adminPassword: "MySecurePassword123"  # Пароль для Grafana (admin)
   service:
     type: NodePort
