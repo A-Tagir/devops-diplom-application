@@ -41,14 +41,14 @@ jobs:
     - name: Install kubectl
       uses: azure/setup-kubectl@v3
 
-    - name: Set Kubeconfig
-      run: |
-        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > /tmp/kubeconfig.yaml
-        export KUBECONFIG=/tmp/kubeconfig.yaml
-
     - name: Deploy to Kubernetes
       run: |
+         echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+         kubectl config view --minify
          kubectl set image deployment/devcats-deployment devcats=atagir/devcats:latest
+      env:
+        KUBECONFIG: ~/.kube/config
+
     - name: Verify deployment
       run: kubectl rollout status deployment/devcats-deployment
 
