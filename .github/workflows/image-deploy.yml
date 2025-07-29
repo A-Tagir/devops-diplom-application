@@ -26,7 +26,7 @@ jobs:
       run: docker push your-image-name:${{ github.sha }}
 
     - name: Install kubectl
-      uses: kubernetes/setup-kubectl@v1
+      uses: azure/setup-kubectl@v3
 
     - name: Deploy to Kubernetes
       run: |
