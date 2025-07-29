@@ -31,12 +31,12 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
     - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/devcats:latest
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/devcats:${{ github.sha }}
 
     - name: Install kubectl
       uses: azure/setup-kubectl@v3
@@ -46,4 +46,7 @@ jobs:
          kubectl set image deployment/devcats-deployment devcats=atagir/devcats:latest --record
       env:
         KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+    - name: Verify deployment
+      run: kubectl rollout status deployment/devcats-deployment
+      
         
