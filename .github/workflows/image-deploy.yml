@@ -46,22 +46,20 @@ jobs:
         mkdir -p ~/.kube
         echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
         chmod 600 ~/.kube/config
-        echo "=== KUBECONFIG CONTENTS ==="
-        cat ~/.kube/config
         echo "=== AVAILABLE CONTEXTS ==="
-        kubectl config get-contexts
+        kubectl config get-contexts --kubeconfig ~/.kube/config
         echo "=== CURRENT CONTEXT ==="
-        kubectl config current-context || echo "No current context set"
+        kubectl config current-context --kubeconfig ~/.kube/config || echo "No current context set"
         echo "=== CLUSTER INFO ==="
-        kubectl cluster-info || echo "Cluster info unavailable"
+        kubectl cluster-info --kubeconfig ~/.kube/config || echo "Cluster info unavailable"
         # Verify the config
-        kubectl config view --minify
-        kubectl config current-context
-        kubectl cluster-info
+        kubectl config view --minify --kubeconfig ~/.kube/config
+        kubectl config current-context --kubeconfig ~/.kube/config
+        kubectl cluster-info --kubeconfig ~/.kube/config
       env:
         KUBECONFIG: ~/.kube/config
 
     - name: Verify deployment
-      run: kubectl rollout status deployment/devcats-deployment
+      run: kubectl rollout status deployment/devcats-deployment --kubeconfig ~/.kube/config
 
         
