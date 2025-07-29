@@ -8,12 +8,8 @@ on:
 
   workflow_dispatch:
     inputs:
-      destroy:
-        description: 'Set to "true" to destroy infrastructure'
-        required: false
-        default: 'false'
       apply:
-        description: 'Set to "true" to apply infrastructure changes'
+        description: 'Set to "true" to manually start workflow'
         required: false
         default: 'false'
 
