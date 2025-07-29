@@ -46,7 +46,14 @@ jobs:
         mkdir -p ~/.kube
         echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
         chmod 600 ~/.kube/config
-        
+        echo "=== KUBECONFIG CONTENTS ==="
+        cat ~/.kube/config
+        echo "=== AVAILABLE CONTEXTS ==="
+        kubectl config get-contexts
+        echo "=== CURRENT CONTEXT ==="
+        kubectl config current-context || echo "No current context set"
+        echo "=== CLUSTER INFO ==="
+        kubectl cluster-info || echo "Cluster info unavailable"
         # Verify the config
         kubectl config view --minify
         kubectl config current-context
