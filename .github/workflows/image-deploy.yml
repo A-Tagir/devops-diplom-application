@@ -43,11 +43,14 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-         mkdir -p ~/.kube
-         echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
-         chmod 600 ~/.kube/config
-         kubectl config view --minify
-         kubectl set image deployment/devcats-deployment devcats=atagir/devcats:latest
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+        chmod 600 ~/.kube/config
+        
+        # Verify the config
+        kubectl config view --minify
+        kubectl config current-context
+        kubectl cluster-info
       env:
         KUBECONFIG: ~/.kube/config
 
