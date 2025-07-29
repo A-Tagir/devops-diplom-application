@@ -56,6 +56,8 @@ jobs:
         kubectl config view --minify --kubeconfig ~/.kube/config
         kubectl config current-context --kubeconfig ~/.kube/config
         kubectl cluster-info --kubeconfig ~/.kube/config
+        kubectl set image deployment/devcats-deployment \
+          devcats=${{ secrets.DOCKER_HUB_USERNAME }}/devcats:${{ github.sha }}
       env:
         KUBECONFIG: ~/.kube/config
 
