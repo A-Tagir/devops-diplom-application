@@ -43,7 +43,7 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-         kubectl set image deployment/devcats-deployment devcats=atagir/devcats:latest --record
+         kubectl set image deployment/devcats-deployment devcats=atagir/devcats:latest
       env:
         KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
     - name: Verify deployment
